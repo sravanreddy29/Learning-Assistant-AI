@@ -41,14 +41,23 @@
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
 
-const topics = ['Vocabulary', 'Finance', 'Random Facts']
 const selectedTopic = ref('Vocabulary')
 const reminderTime = ref('08:00')
 const confirmation = ref(false)
 
 function savePreferences() {
-  // TODO: send data to backend
-  confirmation.value = true
+  axios.post('https://learningassistant-be.onrender.com/preferences', {
+    topic: selectedTopic.value,
+    reminder_time: reminderTime.value
+  })
+  .then(() => {
+    confirmation.value = true
+  })
+  .catch((err) => {
+    console.error('Failed to save preferences:', err)
+  })
 }
 </script>
+
